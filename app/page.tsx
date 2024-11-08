@@ -152,9 +152,7 @@ export default function RedditSummarizer() {
                     if (cleanedLine.startsWith('-') || cleanedLine.startsWith('•')) {
                       return '  '.repeat(indentLevel) + cleanedLine;
                     }
-                    // Use dangerouslySetInnerHTML to properly render HTML tags
-                    const lineWithStrong = cleanedLine.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    return <div key={line} dangerouslySetInnerHTML={{ __html: lineWithStrong }} />;
+                    return cleanedLine.replace(/\*\*(.*?)\*\*/g, '$1');
                   })
                   .filter(line => line)
                   .join('\n')
