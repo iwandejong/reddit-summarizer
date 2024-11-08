@@ -30,6 +30,7 @@ export default function RedditSummarizer() {
   const [summary, setSummary] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const { theme, setTheme } = useTheme()
+  const [copied, setCopied] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setError(null)
@@ -86,10 +87,76 @@ export default function RedditSummarizer() {
             </div>
           )}
           {summary && (
-            <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-100 rounded">
+            <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-100 rounded relative">
+              <div className="absolute top-2 right-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    navigator.clipboard.writeText(summary);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className={`text-green-700 dark:text-green-100 hover:bg-green-200 dark:hover:bg-green-800 border border-green-400 dark:border-green-600 transition-colors ${
+                    copied ? 'bg-green-200 dark:bg-green-800' : ''
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                        />
+                      </svg>
+                      Copy
+                    </>
+                  )}
+                </Button>
+              </div>
               <h3 className="font-bold mb-2">Summary:</h3>
               <div className="prose dark:prose-invert max-w-none whitespace-pre-line">
-                {summary}
+                {summary
+                  .split('\n')
+                  .map(line => {
+                    const cleanedLine = line.trim();
+                    if (cleanedLine === '-') return '';
+                    const indentMatch = line.match(/^[\s\t]*/);
+                    const indentLevel = indentMatch ? Math.floor(indentMatch[0].length / 2) : 0;
+                    if (cleanedLine.startsWith('-') || cleanedLine.startsWith('•')) {
+                      return '  '.repeat(indentLevel) + cleanedLine;
+                    }
+                    return cleanedLine;
+                  })
+                  .filter(line => line)
+                  .join('\n')
+                }
               </div>
             </div>
           )}
