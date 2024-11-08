@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Reddit Thread Summarizer',
   description: 'AI-powered Reddit thread summarization tool',
+  icons: {
+    icon: '/reddit_recap.ico',
+  },
 }
 
 export default function RootLayout({
