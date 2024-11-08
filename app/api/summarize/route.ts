@@ -5,6 +5,12 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+type RedditComment = {
+  data: {
+    body: string;
+  };
+};
+
 export async function POST(request: NextRequest) {
   const { url } = await request.json();
 
@@ -16,7 +22,10 @@ export async function POST(request: NextRequest) {
     // Extract relevant information
     const title = data[0].data.children[0].data.title;
     const selftext = data[0].data.children[0].data.selftext;
-    const comments = data[1].data.children.map((child: any) => child.data.body).join('\n');
+    const comments = data[1].data.children
+      .filter((child: RedditComment) => child.data && typeof child.data.body === 'string')
+      .map((child: RedditComment) => child.data.body)
+      .join('\n');
 
     // Generate summary using OpenAI
     const summary = await openai.chat.completions.create({

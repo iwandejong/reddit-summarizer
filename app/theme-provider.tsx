@@ -41,9 +41,23 @@ export function ThemeProvider({
       setTheme(systemTheme)
     }
 
-    root.classList.remove('light', 'dark')
-    root.classList.add(theme === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  }, [defaultTheme, storageKey])
+    const updateTheme = () => {
+      root.classList.remove('light', 'dark')
+      root.classList.add(theme === 'system' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+    }
+
+    updateTheme()
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = () => {
+      if (theme === 'system') {
+        updateTheme()
+      }
+    }
+    mediaQuery.addEventListener('change', handleChange)
+
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [theme, defaultTheme, storageKey])
 
   const value = {
     theme,
