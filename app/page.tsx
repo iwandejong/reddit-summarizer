@@ -88,7 +88,9 @@ export default function RedditSummarizer() {
           {summary && (
             <div className="mt-4 p-4 bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-100 rounded">
               <h3 className="font-bold mb-2">Summary:</h3>
-              <p>{summary}</p>
+              <div className="prose dark:prose-invert max-w-none whitespace-pre-line">
+                {summary}
+              </div>
             </div>
           )}
         </CardContent>
