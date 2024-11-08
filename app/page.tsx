@@ -152,7 +152,7 @@ export default function RedditSummarizer() {
                     if (cleanedLine.startsWith('-') || cleanedLine.startsWith('•')) {
                       return '  '.repeat(indentLevel) + cleanedLine;
                     }
-                    return cleanedLine;
+                    return cleanedLine.replace(/\*\*/g, '');
                   })
                   .filter(line => line)
                   .join('\n')
