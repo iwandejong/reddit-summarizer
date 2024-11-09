@@ -50,17 +50,17 @@ export default function RedditSummarizer() {
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Reddit Thread Summarizer</CardTitle>
-            <div className="flex items-center space-x-2">
+            <CardTitle className="text-xl sm:text-2xl">Reddit Thread Summarizer</CardTitle>
+            <div className="flex items-center gap-1 sm:gap-2">
               <a
                 href="https://github.com/iwandejong/reddit-summarizer"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View source on GitHub"
               >
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
                   <svg
-                    className="h-5 w-5"
+                    className="h-4 w-4 sm:h-5 sm:w-5"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
@@ -74,16 +74,14 @@ export default function RedditSummarizer() {
                 size="icon"
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 aria-label="Toggle theme"
+                className="h-8 w-8 sm:h-10 sm:w-10"
               >
-                {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+                {theme === 'dark' ? (
+                  <SunIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                ) : (
+                  <MoonIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+                )}
               </Button>
-              <a
-                href="https://buymeacoffee.com/iwandejong"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant="outline">Buy Me a Coffee</Button>
-              </a>
             </div>
           </div>
           <CardDescription>Enter a Reddit thread URL to get an AI-generated summary.</CardDescription>
@@ -178,8 +176,18 @@ export default function RedditSummarizer() {
             </div>
           )}
         </CardContent>
-        <CardFooter className="text-sm text-gray-500 dark:text-gray-400">
-          Powered by OpenAI GPT-3.5
+        <CardFooter className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
+          <p>
+            Powered by OpenAI GPT-3.5
+          </p>
+          <a
+            href="https://buymeacoffee.com/iwandejong"
+            target="_blank"
+            rel="noopener noreferrer"
+            className=""
+            >
+            <Button variant="outline">Buy Me a Coffee</Button>
+        </a>
         </CardFooter>
       </Card>
     </div>
